@@ -1,0 +1,37 @@
+<!-- templates/professional/patients.html -->
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layouts/user"
+      xmlns:th="http://www.thymeleaf.org">
+<head><title>Pacientes</title></head>
+<body>
+<div layout:fragment="content" th:with="page='patients'">
+  <div class="flex items-center justify-between mb-6">
+    <h2 class="text-2xl font-bold">Pacientes</h2>
+    <a th:href="@{/professional/patients/new}" class="inline-flex items-center rounded-lg bg-brand px-4 py-2 text-white hover:bg-blue-700">+ Nuevo</a>
+  </div>
+  <table class="min-w-full divide-y divide-gray-200 bg-white rounded-xl shadow overflow-hidden text-sm">
+    <thead class="bg-gray-50"><tr>
+      <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase">ID</th>
+      <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase">Documento</th>
+      <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase">Nombre</th>
+      <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase">Dirección</th>
+      <th class="px-6 py-3"></th></tr></thead>
+    <tbody class="divide-y divide-gray-200">
+      <tr th:each="p:${patients}" class="hover:bg-gray-50">
+        <td class="px-6 py-4" th:text="${p.userId}"/>
+        <td class="px-6 py-4" th:text="${p.docType + ' - ' + p.docNumber}"/>
+        <td class="px-6 py-4" th:text="${p.user.firstName + ' ' + p.user.lastName}"/>
+        <td class="px-6 py-4" th:text="${p.address}"/>
+        <td class="px-6 py-4 text-right">
+          <a th:href="@{'/professional/patients/' + ${p.userId} + '/edit'}"
+             class="text-blue-600 hover:text-blue-800 mr-4">Editar</a>
+          <form th:action="@{'/professional/patients/' + ${p.userId} + '/delete'}" method="post" class="inline">
+            <button onclick="return confirm('¿Eliminar?')" class="text-red-600 hover:text-red-800">Eliminar</button>
+          </form>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

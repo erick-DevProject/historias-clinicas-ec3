@@ -1,0 +1,25 @@
+<!-- templates/admin/dashboard.html -->
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layouts/admin"
+      xmlns:th="http://www.thymeleaf.org">
+<head><title>Dashboard</title></head>
+<body>
+<div layout:fragment="content" th:with="page='admin/dashboard'">
+  <h2 class="text-3xl font-bold mb-6">¡Bienvenido, <span th:text="${user.firstName}"/>!</h2>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="bg-white rounded-xl shadow p-6">
+      <p class="text-gray-500 text-sm">Profesionales</p>
+      <p class="text-3xl font-bold" th:text="${prosCount}">0</p>
+    </div>
+    <div class="bg-white rounded-xl shadow p-6">
+      <p class="text-gray-500 text-sm">Pacientes</p>
+      <p class="text-3xl font-bold" th:text="${patientsCount}">0</p>
+    </div>
+    <div class="bg-white rounded-xl shadow p-6">
+      <p class="text-gray-500 text-sm">Episodios abiertos</p>
+      <p class="text-3xl font-bold" th:text="${openEpisodes}">0</p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

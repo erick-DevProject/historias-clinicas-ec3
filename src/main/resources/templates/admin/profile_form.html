@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layouts/admin"
+      xmlns:th="http://www.thymeleaf.org">
+<head><title>Perfil Administrador</title></head>
+<body><div layout:fragment="content" th:with="page='admin/profile'">
+  <h2 class="text-2xl font-bold mb-6">Mi Perfil</h2>
+  <form th:replace="~{patient/profile_form :: form}"></form> <!-- reutilizamos formulario -->
+</div></body>
+</html>

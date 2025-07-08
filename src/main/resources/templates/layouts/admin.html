@@ -1,0 +1,62 @@
+<!-- src/main/resources/templates/layouts/admin.html -->
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <meta charset="UTF-8"/>
+  <title layout:title-pattern="$CONTENT_TITLE · Historias Clínicas">Panel</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { colors: { brand: '#2563eb' } } }
+    };
+  </script>
+</head>
+
+<!--  ⬇️  page nunca queda null  -->
+<body class="h-full bg-gray-100 flex"
+      th:with="role=${role}, page=${page}?:''">
+
+  <!-- SIDEBAR -->
+  <aside class="w-64 shrink-0 h-screen bg-white border-r border-gray-200 p-6 flex flex-col">
+    <h1 class="text-2xl font-bold text-brand mb-8">
+      Historias<br/>Clínicas
+    </h1>
+
+    <nav class="flex-1">
+      <ul class="space-y-1">
+        <li>
+          <a th:href="@{/admin/dashboard}"
+             th:classappend="${page=='admin/dashboard'}? 'font-semibold bg-gray-100' : ''"
+             class="block rounded-lg px-3 py-2 hover:bg-gray-100">🏠 Dashboard</a>
+        </li>
+
+        <li>
+          <a th:href="@{/admin/professionals}"
+             th:classappend="${#strings.startsWith(page,'admin/professionals')}? 'font-semibold bg-gray-100' : ''"
+             class="block rounded-lg px-3 py-2 hover:bg-gray-100">👩‍⚕️ Profesionales</a>
+        </li>
+
+        <li th:if="${role=='ADMIN_PRIMARY'}">
+          <a th:href="@{/admin/admins}"
+             th:classappend="${#strings.startsWith(page,'admin/admins')}? 'font-semibold bg-gray-100' : ''"
+             class="block rounded-lg px-3 py-2 hover:bg-gray-100">👑 Administradores</a>
+        </li>
+      </ul>
+    </nav>
+
+    <a th:href="@{/profile/edit}"
+       class="mt-4 inline-flex items-center justify-center rounded-lg bg-gray-200 px-4 py-2 text-gray-800">
+      ✏️ Editar perfil
+    </a>
+
+    <a th:href="@{/logout}"
+       class="mt-4 inline-flex items-center justify-center rounded-lg bg-red-500 hover:bg-red-600 text-white py-2 px-4">
+      ➜ Cerrar sesión
+    </a>
+  </aside>
+
+  <!-- CONTENT -->
+  <main class="flex-1 overflow-y-auto p-8" layout:fragment="content"></main>
+</body>
+</html>

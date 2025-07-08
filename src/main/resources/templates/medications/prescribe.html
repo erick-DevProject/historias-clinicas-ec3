@@ -1,0 +1,41 @@
+<!-- templates/medications/prescribe.html -->
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layouts/user"
+      xmlns:th="http://www.thymeleaf.org">
+<head><title>Prescribir Medicamento</title></head>
+<body>
+<div layout:fragment="content" th:with="page='medications'">
+  <h2 class="text-2xl font-bold mb-6">Prescribir Medicamento</h2>
+  <form th:action="@{/professional/medications/prescribe}" method="post" class="space-y-4 max-w-lg">
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Episodio</label>
+      <select name="episodeId" required class="mt-1 p-2 w-full rounded-lg border-gray-300 shadow-sm focus:ring-brand">
+        <option th:each="e:${episodes}" th:value="${e.episodeId}"
+                th:text="'#' + ${e.episodeId} + ' – ' + ${e.patient.user.firstName} + ' ' + ${e.patient.user.lastName}"/>
+      </select>
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Medicamento</label>
+      <select name="medicationId" required class="mt-1 p-2 w-full rounded-lg border-gray-300 shadow-sm focus:ring-brand">
+        <option th:each="m:${medications}" th:value="${m.medicationId}" th:text="${m.name}"/>
+      </select>
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Dosis</label>
+      <input name="dose" required class="mt-1 p-2 w-full rounded-lg border-gray-300 shadow-sm focus:ring-brand"/>
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Vía</label>
+      <select name="route" required class="mt-1 p-2 w-full rounded-lg border-gray-300 shadow-sm focus:ring-brand">
+        <option th:each="r:${routes}" th:value="${r}" th:text="${r}"/>
+      </select>
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Frecuencia (opcional)</label>
+      <input name="frequency" class="mt-1 p-2 w-full rounded-lg border-gray-300 shadow-sm focus:ring-brand"/>
+    </div>
+    <button class="inline-flex items-center rounded-lg bg-brand px-6 py-2 text-white hover:bg-blue-700">Prescribir</button>
+  </form>
+</div>
+</body>
+</html>

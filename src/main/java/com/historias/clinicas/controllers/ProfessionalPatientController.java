@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * ABM de pacientes para el profesional que ha iniciado sesión.
+ */
 @Controller
 @RequestMapping("/professional/patients")
 public class ProfessionalPatientController {
@@ -25,43 +28,47 @@ public class ProfessionalPatientController {
         this.userRepo    = userRepo;
     }
 
-    /** Listado de pacientes */
+    /* ------------------------------------------------------------------
+     * LISTADO
+     * ------------------------------------------------------------------ */
     @GetMapping
     public String list(Model model) {
-        List<Patient> patients = patientRepo.findAll();
-        model.addAttribute("patients", patients);
-        return "professional/list";
+        model.addAttribute("patients", patientRepo.findAll());
+        return "professional/patients";             // ← vista patients.html
     }
 
-    /** Formulario nuevo paciente */
+    /* ------------------------------------------------------------------
+     * FORMULARIO NUEVO
+     * ------------------------------------------------------------------ */
     @GetMapping("/new")
     public String form(Model model) {
-        Patient patient = new Patient();
-        patient.setUser(new UserEntity());
-        model.addAttribute("patient", patient);
+        Patient p = new Patient();
+        p.setUser(new UserEntity());                // evita NPE al bindear
+        model.addAttribute("patient",  p);
         model.addAttribute("docTypes", DocType.values());
-        return "professional/form";
+        return "professional/patient-form";         // ← vista patient-form.html
     }
 
-    /** Alta de paciente */
+    /* ------------------------------------------------------------------
+     * ALTA
+     * ------------------------------------------------------------------ */
     @PostMapping
-    public String create(
-            @RequestParam String username,
-            @RequestParam String password,
-            @RequestParam DocType docType,
-            @RequestParam String docNumber,
-            @RequestParam String firstName,
-            @RequestParam String lastName,
-            @RequestParam(required = false) String address,
-            Model model) {
+    public String create(@RequestParam String username,
+                         @RequestParam String password,
+                         @RequestParam DocType docType,
+                         @RequestParam String docNumber,
+                         @RequestParam String firstName,
+                         @RequestParam String lastName,
+                         @RequestParam(required = false) String address,
+                         Model model) {
 
         if (userRepo.findByUsername(username).isPresent()) {
             model.addAttribute("error", "El usuario ya existe");
-            Patient patient = new Patient();
-            patient.setUser(new UserEntity());
-            model.addAttribute("patient", patient);
+            Patient p = new Patient();
+            p.setUser(new UserEntity());
+            model.addAttribute("patient",  p);
             model.addAttribute("docTypes", DocType.values());
-            return "professional/form";
+            return "professional/patient-form";
         }
 
         UserEntity u = new UserEntity();
@@ -71,35 +78,39 @@ public class ProfessionalPatientController {
         u.setLastName(lastName);
         userRepo.save(u);
 
-        Patient p = new Patient(u, docType, docNumber, address);
-        patientRepo.save(p);
+        Patient patient = new Patient(u, docType, docNumber, address);
+        patientRepo.save(patient);
 
-        // Redirigir al dashboard, no a la lista antigua
         return "redirect:/professional/dashboard";
     }
 
-    /** Formulario edición paciente */
+    /* ------------------------------------------------------------------
+     * FORMULARIO EDICIÓN
+     * ------------------------------------------------------------------ */
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable Integer id, Model model) {
         Patient p = patientRepo.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Paciente no encontrado: " + id));
-        model.addAttribute("patient", p);
+            .orElseThrow(() -> new IllegalArgumentException(
+                "Paciente no encontrado: " + id));
+        model.addAttribute("patient",  p);
         model.addAttribute("docTypes", DocType.values());
-        return "professional/form";
+        return "professional/patient-form";
     }
 
-    /** Actualizar paciente */
+    /* ------------------------------------------------------------------
+     * ACTUALIZACIÓN
+     * ------------------------------------------------------------------ */
     @PostMapping("/{id}/edit")
-    public String update(
-            @PathVariable Integer id,
-            @RequestParam DocType docType,
-            @RequestParam String docNumber,
-            @RequestParam String firstName,
-            @RequestParam String lastName,
-            @RequestParam(required = false) String address) {
+    public String update(@PathVariable Integer id,
+                         @RequestParam DocType docType,
+                         @RequestParam String docNumber,
+                         @RequestParam String firstName,
+                         @RequestParam String lastName,
+                         @RequestParam(required = false) String address) {
 
         Patient p = patientRepo.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Paciente no encontrado: " + id));
+            .orElseThrow(() -> new IllegalArgumentException(
+                "Paciente no encontrado: " + id));
         UserEntity u = p.getUser();
 
         u.setFirstName(firstName);
@@ -114,7 +125,9 @@ public class ProfessionalPatientController {
         return "redirect:/professional/patients";
     }
 
-    /** Baja de paciente */
+    /* ------------------------------------------------------------------
+     * BAJA
+     * ------------------------------------------------------------------ */
     @PostMapping("/{id}/delete")
     public String delete(@PathVariable Integer id) {
         patientRepo.deleteById(id);

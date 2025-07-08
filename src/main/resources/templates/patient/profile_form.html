@@ -1,0 +1,63 @@
+<!-- templates/patient/profile_form.html -->
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layouts/user"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Editar perfil</title>
+</head>
+<body>
+<div layout:fragment="content" th:with="page='profile'">
+  <h2 class="text-2xl font-bold mb-6">Editar Perfil</h2>
+
+  <!-- ←—— ahora el fragmento se llama “form” ———→ -->
+  <form th:fragment="form"
+        th:action="@{/profile/edit}"
+        method="post"
+        class="space-y-4 max-w-lg">
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Nombre</label>
+        <input name="firstName"
+               th:value="${user.firstName}"
+               required
+               class="mt-1 p-2 w-full rounded-lg border-gray-300 shadow-sm focus:ring-brand"/>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Apellido</label>
+        <input name="lastName"
+               th:value="${user.lastName}"
+               required
+               class="mt-1 p-2 w-full rounded-lg border-gray-300 shadow-sm focus:ring-brand"/>
+      </div>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Teléfono</label>
+      <input name="phone"
+             th:value="${user.phone}"
+             class="mt-1 p-2 w-full rounded-lg border-gray-300 shadow-sm focus:ring-brand"/>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Correo</label>
+      <input name="email"
+             type="email"
+             th:value="${user.email}"
+             class="mt-1 p-2 w-full rounded-lg border-gray-300 shadow-sm focus:ring-brand"/>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Nueva contraseña (opcional)</label>
+      <input name="password"
+             type="password"
+             class="mt-1 p-2 w-full rounded-lg border-gray-300 shadow-sm focus:ring-brand"/>
+    </div>
+
+    <button class="inline-flex items-center rounded-lg bg-brand px-6 py-2 text-white hover:bg-blue-700">
+      Guardar cambios
+    </button>
+  </form>
+</div>
+</body>
+</html>

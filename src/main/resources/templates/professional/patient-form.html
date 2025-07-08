@@ -1,0 +1,53 @@
+<!-- templates/professional/patient-form.html -->
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layouts/user"
+      xmlns:th="http://www.thymeleaf.org">
+<head><title>Paciente</title></head>
+<body>
+<div layout:fragment="content" th:with="page='patients'">
+  <h2 class="text-2xl font-bold mb-6" th:text="${patient.userId==null ? 'Nuevo paciente' : 'Editar paciente'}">Formulario</h2>
+  <div th:if="${error}" class="text-red-600 mb-4" th:text="${error}"></div>
+
+  <form th:action="@{${patient.userId==null} ? '/professional/patients' : '/professional/patients/' + ${patient.userId} + '/edit'}"
+        method="post" class="space-y-4 max-w-lg">
+    <div th:if="${patient.userId==null}">
+      <label class="block text-sm font-medium text-gray-700">Usuario</label>
+      <input name="username" required class="mt-1 p-2 w-full rounded-lg border-gray-300 shadow-sm focus:ring-brand"/>
+    </div>
+    <div th:if="${patient.userId==null}">
+      <label class="block text-sm font-medium text-gray-700">Contraseña</label>
+      <input type="password" name="password" required class="mt-1 p-2 w-full rounded-lg border-gray-300 shadow-sm focus:ring-brand"/>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Tipo de documento</label>
+      <select name="docType" required class="mt-1 p-2 w-full rounded-lg border-gray-300 shadow-sm focus:ring-brand">
+        <option th:each="d:${docTypes}" th:value="${d}" th:text="${d}"
+                th:selected="${d==patient.docType}"/>
+      </select>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Número de documento</label>
+      <input name="docNumber" th:value="${patient.docNumber}" required class="mt-1 p-2 w-full rounded-lg border-gray-300 shadow-sm focus:ring-brand"/>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
+      <div><label class="block text-sm font-medium text-gray-700">Nombre</label>
+           <input name="firstName" th:value="${patient.user.firstName}" required class="mt-1 p-2 w-full rounded-lg border-gray-300 shadow-sm focus:ring-brand"/></div>
+      <div><label class="block text-sm font-medium text-gray-700">Apellido</label>
+           <input name="lastName" th:value="${patient.user.lastName}" required class="mt-1 p-2 w-full rounded-lg border-gray-300 shadow-sm focus:ring-brand"/></div>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Dirección / Historial</label>
+      <input name="address" th:value="${patient.address}" class="mt-1 p-2 w-full rounded-lg border-gray-300 shadow-sm focus:ring-brand"/>
+    </div>
+
+    <div class="text-right">
+      <button class="inline-flex items-center rounded-lg bg-brand px-6 py-2 text-white hover:bg-blue-700">Guardar</button>
+    </div>
+  </form>
+</div>
+</body>
+</html>

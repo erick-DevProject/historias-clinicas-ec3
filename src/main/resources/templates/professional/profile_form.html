@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layouts/user"
+      xmlns:th="http://www.thymeleaf.org">
+<head><title>Perfil Profesional</title></head>
+<body><div layout:fragment="content" th:with="page='profile'">
+  <h2 class="text-2xl font-bold mb-6">Mi Perfil</h2>
+  <form th:replace="~{patient/profile_form :: form}"></form>
+</div></body>
+</html>

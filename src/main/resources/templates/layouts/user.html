@@ -1,0 +1,76 @@
+<!-- src/main/resources/templates/layouts/user.html -->
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <meta charset="UTF-8"/>
+  <title layout:title-pattern="$CONTENT_TITLE · Historias Clínicas">Panel</title>
+
+  <!-- Tailwind vía CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { colors: { brand: '#2563eb' } } }
+    };
+  </script>
+</head>
+
+<!-- ①  Añadimos roleName (texto) para comparar sin problemas -->
+<body class="h-full bg-gray-100 flex"
+      th:with="
+         page=${page} ?: '',
+         role=${session.ROLE},
+         roleName=${role != null} ? ${role.name()} : '',
+         homePath=${role != null} ? ${#strings.toLowerCase(role.name()) + '/dashboard'} : ''">
+
+
+  <!-- SIDEBAR -->
+  <aside class="w-64 bg-white h-screen border-r p-6 flex flex-col">
+    <h1 class="text-2xl font-bold text-brand mb-8">Historias Clínicas</h1>
+
+    <nav class="flex-1">
+      <ul class="space-y-1">
+
+        <!-- DASHBOARD -->
+        <li>
+          <a href="/professional/dashboard"
+             th:classappend="${page=='dashboard'} ? 'font-semibold bg-gray-100' : ''"
+             class="block px-3 py-2 rounded hover:bg-gray-100">🏠 Dashboard</a>
+             
+        </li>
+
+        <!-- ②  Opciones exclusivas para PROFESIONAL -->
+        <li th:if="${roleName=='PROFESSIONAL'}">
+          <a th:href="@{/professional/patients}"
+             th:classappend="${#strings.startsWith(page,'patients')} ? 'font-semibold bg-gray-100' : ''"
+             class="block px-3 py-2 rounded hover:bg-gray-100">🧑‍🤝‍🧑 Pacientes</a>
+        </li>
+
+        <li th:if="${roleName=='PROFESSIONAL'}">
+          <a th:href="@{/professional/medications}"
+             th:classappend="${#strings.startsWith(page,'medications')} ? 'font-semibold bg-gray-100' : ''"
+             class="block px-3 py-2 rounded hover:bg-gray-100">💊 Medicaciones</a>
+        </li>
+
+        <!-- ③  Ejemplo futuro: opciones para PACIENTE
+        <li th:if="${roleName=='PATIENT'}">…</li>
+        -->
+      </ul>
+    </nav>
+
+    <!-- enlaces comunes -->
+    <a th:href="@{/profile/edit}"
+       class="mb-4 inline-flex items-center justify-center rounded-lg bg-gray-200 px-4 py-2 text-gray-800 hover:bg-gray-300">
+      ✏️ Editar perfil
+    </a>
+
+    <a th:href="@{/logout}"
+       class="inline-flex items-center justify-center rounded-lg bg-red-500 hover:bg-red-600 text-white py-2 px-4">
+      ➜ Cerrar sesión
+    </a>
+  </aside>
+
+  <!-- CONTENIDO -->
+  <main class="flex-1 overflow-y-auto p-8" layout:fragment="content"></main>
+</body>
+</html>

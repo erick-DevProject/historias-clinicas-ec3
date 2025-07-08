@@ -1,0 +1,23 @@
+<!-- templates/medications/form.html -->
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layouts/user"
+      xmlns:th="http://www.thymeleaf.org">
+<head><title>Medicamento</title></head>
+<body>
+<div layout:fragment="content" th:with="page='medications'">
+  <h2 class="text-2xl font-bold mb-4" th:text="${medication.medicationId==null ? 'Nuevo medicamento' : 'Editar medicamento'}">Form</h2>
+  <form th:action="@{${medication.medicationId==null} ? '/professional/medications' : '/professional/medications/' + ${medication.medicationId} + '/edit'}"
+        method="post" class="space-y-4 max-w-lg">
+    <div><label class="block text-sm font-medium text-gray-700">Nombre</label>
+         <input name="name" th:value="${medication.name}" required class="mt-1 p-2 w-full rounded-lg border-gray-300 shadow-sm focus:ring-brand"/></div>
+    <div><label class="block text-sm font-medium text-gray-700">Forma</label>
+         <input name="form" th:value="${medication.form}" class="mt-1 p-2 w-full rounded-lg border-gray-300 shadow-sm focus:ring-brand"/></div>
+    <div><label class="block text-sm font-medium text-gray-700">Concentración</label>
+         <input name="concentration" th:value="${medication.concentration}" class="mt-1 p-2 w-full rounded-lg border-gray-300 shadow-sm focus:ring-brand"/></div>
+    <div class="text-right">
+      <button class="inline-flex items-center rounded-lg bg-brand px-6 py-2 text-white hover:bg-blue-700">Guardar</button>
+    </div>
+  </form>
+</div>
+</body>
+</html>

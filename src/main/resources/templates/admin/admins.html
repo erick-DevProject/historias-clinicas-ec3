@@ -1,0 +1,36 @@
+<!-- templates/admin/admins.html -->
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layouts/admin"
+      xmlns:th="http://www.thymeleaf.org">
+<head><title>Administradores</title></head>
+<body>
+<div layout:fragment="content" th:with="page='admin/admins'">
+  <div class="flex items-center justify-between mb-6">
+    <h2 class="text-2xl font-bold">Administradores</h2>
+    <a th:href="@{/admin/admins/new}" class="inline-flex items-center rounded-lg bg-brand px-4 py-2 text-white hover:bg-blue-700">+ Nuevo</a>
+  </div>
+  <table class="min-w-full divide-y divide-gray-200 bg-white rounded-xl shadow overflow-hidden text-sm">
+    <thead class="bg-gray-50"><tr>
+      <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase">ID</th>
+      <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase">Usuario</th>
+      <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase">Nombre</th>
+      <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase">Principal</th>
+      <th class="px-6 py-3"></th>
+    </tr></thead>
+    <tbody class="divide-y divide-gray-200">
+      <tr th:each="a : ${admins}" class="hover:bg-gray-50">
+        <td class="px-6 py-4" th:text="${a.userId}"/>
+        <td class="px-6 py-4" th:text="${a.user.username}"/>
+        <td class="px-6 py-4" th:text="${a.user.firstName + ' ' + a.user.lastName}"/>
+        <td class="px-6 py-4" th:text="${a.primaryAdmin}"/>
+        <td class="px-6 py-4 text-right">
+          <form th:if="${!a.primaryAdmin}" th:action="@{'/admin/admins/' + ${a.userId} + '/delete'}" method="post" class="inline">
+            <button class="text-red-600 hover:text-red-800" onclick="return confirm('¿Eliminar?')">Eliminar</button>
+          </form>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

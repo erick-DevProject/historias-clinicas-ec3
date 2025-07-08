@@ -1,0 +1,38 @@
+<!-- templates/medications/list.html -->
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layouts/user"
+      xmlns:th="http://www.thymeleaf.org">
+<head><title>Medicaciones</title></head>
+<body>
+<div layout:fragment="content" th:with="page='medications'">
+  <div class="flex items-center justify-between mb-6">
+    <h2 class="text-2xl font-bold">Medicaciones Disponibles</h2>
+    <a th:href="@{/professional/medications/new}" class="inline-flex items-center rounded-lg bg-brand px-4 py-2 text-white hover:bg-blue-700">+ Nuevo</a>
+  </div>
+  <table class="min-w-full divide-y divide-gray-200 bg-white rounded-xl shadow overflow-hidden text-sm">
+    <thead class="bg-gray-50"><tr>
+      <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase">ID</th>
+      <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase">Nombre</th>
+      <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase">Forma</th>
+      <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase">Concentración</th>
+      <th class="px-6 py-3"></th>
+    </tr></thead>
+    <tbody class="divide-y divide-gray-200">
+      <tr th:each="m:${medications}" class="hover:bg-gray-50">
+        <td class="px-6 py-4" th:text="${m.medicationId}"/>
+        <td class="px-6 py-4" th:text="${m.name}"/>
+        <td class="px-6 py-4" th:text="${m.form}"/>
+        <td class="px-6 py-4" th:text="${m.concentration}"/>
+        <td class="px-6 py-4 text-right space-x-2">
+          <a th:href="@{'/professional/medications/' + ${m.medicationId} + '/edit'}"
+             class="text-blue-600 hover:text-blue-800">Editar</a>
+          <form th:action="@{'/professional/medications/' + ${m.medicationId} + '/delete'}" method="post" class="inline">
+            <button onclick="return confirm('¿Eliminar?')" class="text-red-600 hover:text-red-800">Eliminar</button>
+          </form>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

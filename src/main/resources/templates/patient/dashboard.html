@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layouts/user"
+      xmlns:th="http://www.thymeleaf.org">
+<head><title>Dashboard Paciente</title></head>
+<body>
+<div layout:fragment="content" th:with="page='dashboard'">
+  <h2 class="text-3xl font-bold mb-6">
+    ¡Bienvenido,
+    <span th:text="${user.firstName}"/> <span th:text="${user.lastName}"/>!
+  </h2>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="bg-white p-6 rounded shadow">
+      <p class="text-gray-600">Episodios abiertos</p>
+      <p class="text-2xl font-semibold"
+         th:text="${#numbers.formatInteger(activeEpisodes, 0)}">0</p>
+    </div>
+    <div class="bg-white p-6 rounded shadow">
+      <p class="text-gray-600">Prescripciones vigentes</p>
+      <p class="text-2xl font-semibold"
+         th:text="${#numbers.formatInteger(prescriptionsCount, 0)}">0</p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

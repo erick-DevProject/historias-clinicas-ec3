@@ -1,0 +1,31 @@
+<!-- templates/admin/admin-form.html -->
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layouts/admin"
+      xmlns:th="http://www.thymeleaf.org">
+<head><title>Nuevo Administrador</title></head>
+<body>
+<div layout:fragment="content" th:with="page='admin/admins'">
+  <h2 class="text-2xl font-bold mb-6">Nuevo administrador</h2>
+  <div th:if="${error}" class="mb-4 text-red-600" th:text="${error}">Usuario ya existe</div>
+  <form th:action="@{/admin/admins}" method="post" class="space-y-4 max-w-lg">
+    <div><label class="block text-sm font-medium text-gray-700">Usuario</label>
+         <input name="username" required class="mt-1 p-2 w-full rounded-lg border-gray-300 shadow-sm focus:ring-brand"/></div>
+    <div><label class="block text-sm font-medium text-gray-700">Contraseña</label>
+         <input type="password" name="password" required class="mt-1 p-2 w-full rounded-lg border-gray-300 shadow-sm focus:ring-brand"/></div>
+    <div class="grid grid-cols-2 gap-4">
+      <div><label class="block text-sm font-medium text-gray-700">Nombre</label>
+           <input name="firstName" required class="mt-1 p-2 w-full rounded-lg border-gray-300 shadow-sm focus:ring-brand"/></div>
+      <div><label class="block text-sm font-medium text-gray-700">Apellido</label>
+           <input name="lastName" required class="mt-1 p-2 w-full rounded-lg border-gray-300 shadow-sm focus:ring-brand"/></div>
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Sexo</label>
+      <select name="sex" class="mt-1 p-2 w-full rounded-lg border-gray-300 shadow-sm focus:ring-brand">
+        <option th:each="s:${sexValues}" th:value="${s}" th:text="${s}"/>
+      </select>
+    </div>
+    <button class="inline-flex items-center rounded-lg bg-brand px-6 py-2 text-white hover:bg-blue-700">Guardar</button>
+  </form>
+</div>
+</body>
+</html>
